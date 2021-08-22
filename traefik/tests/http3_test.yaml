@@ -1,0 +1,44 @@
+suite: Experimental HTTP/3 configuration
+tests:
+  - it: Should globally enable experimental HTTP/3 support
+    set:
+      experimental:
+        http3:
+          enabled: true
+    asserts:
+    - contains:
+        path: spec.template.spec.containers[0].args
+        content: "--experimental.http3=true"
+      template: deployment.yaml
+  - it: Should enable HTTP/3 for ports
+    set:
+      ports:
+        websecure:
+          http3: true
+    asserts:
+    - contains:
+        path: spec.template.spec.containers[0].args
+        content: "--entryPoints.websecure.enablehttp3=true"
+      template: deployment.yaml
+  - it: Should create an UDP service for HTTP/3-enabled ports
+    set:
+      ports:
+        websecure:
+          http3: true
+    asserts:
+    - contains:
+        path: items[0].spec.ports
+        content:
+          name: websecure
+          port: 443
+          protocol: TCP
+          targetPort: websecure
+      template: service.yaml
+    - contains:
+        path: items[1].spec.ports
+        content:
+          name: websecure
+          port: 443
+          protocol: UDP
+          targetPort: 8443
+      template: service.yaml

@@ -23,7 +23,6 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].image
           value: traefik/traefik:2.5.3
-
   - it: should have no resource limit by default
     asserts:
       - isNull:

@@ -108,6 +108,9 @@
           {{- range $name, $config := .Values.ports }}
           {{- if $config }}
           - "--entryPoints.{{$name}}.address=:{{ $config.port }}/{{ default "tcp" $config.protocol | lower }}"
+          {{- if $config.http3 }}
+          - "--entryPoints.{{$name}}.enablehttp3=true"
+          {{- end }}
           {{- end }}
           {{- end }}
           - "--api.dashboard=true"
@@ -145,6 +148,9 @@
           {{- if .Values.providers.kubernetesIngress.labelSelector }}
           - "--providers.kubernetesingress.labelSelector={{ .Values.providers.kubernetesIngress.labelSelector }}"
           {{- end }}
+          {{- end }}
+          {{- if .Values.experimental.http3.enabled }}
+          - "--experimental.http3=true"
           {{- end }}
           {{- if .Values.experimental.kubernetesGateway.enabled }}
           - "--providers.kubernetesgateway"

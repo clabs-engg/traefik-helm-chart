@@ -87,6 +87,8 @@ experimental:
     # By default, Gateway would be created to the Namespace you are deploying Traefik to.
     # You may create that Gateway in another namespace, setting its name below:
     # namespace: default
+  http3:
+    enabled: false
 
 # Create an IngressRoute for the dashboard
 ingressRoute:
@@ -284,6 +286,12 @@ ports:
     # The port protocol (TCP/UDP)
     protocol: TCP
     # nodePort: 32443
+    #
+    # Enable experimental HTTP/3 support for this entrypoint.
+    # Enabling this adds a UDP port to the Service on the same port.
+    # HTTP/3 must be enabled in experimental features above.
+    # http3: true
+    #
     # Set TLS at the entrypoint
     # https://doc.traefik.io/traefik/routing/entrypoints/#tls
     tls:
